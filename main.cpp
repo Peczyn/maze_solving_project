@@ -2,6 +2,7 @@
 #include <vector>
 #include <cmath>
 #include <stack>
+#include <random>
 using namespace std;
 
 
@@ -69,7 +70,9 @@ void PrintMatrix(const vector<vector<T>>& matrix);
 
 
 
-
+std::random_device dev;
+std::mt19937 rng(dev());
+std::uniform_int_distribution<std::mt19937::result_type> dist6(1,100);
 
 
 
@@ -86,7 +89,8 @@ void PrintMatrix(const vector<vector<T>>& matrix);
 int main() {
 
 
-    maze.GenerateFullMaze(10,20);
+
+    maze.GenerateFullMaze(19,19);
 
 
     MazeSolver maze1;
@@ -120,8 +124,8 @@ bool MazeGenerator::CreateMaze(int width, int height) {
 
     mMaze =  vector<vector<int>>(mHeight,vector<int>(mWidth,0));
 
-    int x = rand()%mWidth;
-    int y = rand()%mHeight;
+    int x = dist6(rng)%mWidth;
+    int y = dist6(rng)%mHeight;
 
     mStack.push(make_pair(x,y));
     mMaze[y][x]= CellVisited;
@@ -165,7 +169,7 @@ bool MazeGenerator::UpdateMaze() {
 
         if(!neighbours.empty())
         {
-            int nextCellDir = neighbours[rand() % neighbours.size()];
+            int nextCellDir = neighbours[dist6(rng) % neighbours.size()];
 
             switch(nextCellDir)
             {
